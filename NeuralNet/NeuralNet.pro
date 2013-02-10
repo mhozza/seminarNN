@@ -3,10 +3,11 @@
 # Project created by QtCreator 2011-03-24T17:36:52
 #
 #-------------------------------------------------
-TARGET = NeuralNet
-CONFIG   += console
-CONFIG   -= app_bundle
+QT       += core gui
 
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = NeuralNet
 TEMPLATE = app
 
 SOURCES += main.cpp \
