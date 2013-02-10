@@ -19,7 +19,6 @@ SOURCES += main.cpp \
 
 HEADERS += \
     perceptron.h \
-    binary_perceptron.h \
     continuous_perceptron.h \
     neurallayer.h \
     neuralnetwork.h

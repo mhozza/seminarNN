@@ -3,19 +3,23 @@
 namespace NeuralNET
 {
 
+  NeuralNetwork::NeuralNetwork()
+  {
+  }
+
   NeuralNetwork::NeuralNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha = .25)
   {
-    if(layerCount>sizeof(sizes))
+    /*if(layerCount>sizeof(sizes))
     {
       throw -1;
-    }
+    }*/
 
     layers.resize(layerCount);
     for(unsigned i = 0; i< layers.size();i++)
-    {
+    {      
       layers[i] = new NeuralLayer(sizes[i],i==0 ? dimension : sizes [i-1],alpha);
       //layers[i]->setW0(0.01);
-      layers[i]->setMomentum(0.3);
+      //layers[i]->setMomentum(0.3);
 
     }
     //layers[0]->setW0(0.01);
@@ -26,6 +30,7 @@ namespace NeuralNET
 
   float NeuralNetwork::train(vector<float> input,vector<int> target)
   {
+    //todo: optimalizacia
     vector<vector<float> > in;
     in.resize(layers.size()+1);
     in[0] = input;
@@ -62,13 +67,20 @@ namespace NeuralNET
 
   vector<float> NeuralNetwork::classify(vector<float> input)
   {
-    vector<float> in = input;
+    //vector<float> in = input;
 
-    for(unsigned i = 0;i<layers.size()-1;i++)
+    for(unsigned i = 0;i<layers.size();i++)
     {
-      in = layers[i]->classify(in);
+      input = layers[i]->classify(input);
     }
-    return layers[layers.size()-1]->classify(in);
+    //return layers[layers.size()-1]->classify(innput);
+    return input;
+  }
+
+  float NeuralNetwork::classify1(vector<float> input)
+  {
+    vector<float> t = classify(input);
+    return t[0];
   }
 
   vector<int> NeuralNetwork::discreteClassify(vector<float> input)
