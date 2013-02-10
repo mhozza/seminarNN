@@ -25,11 +25,13 @@ namespace NeuralNET
   class NeuralNetwork
   {    
   protected:
+    NeuralNetwork();
     vector<NeuralLayer*> layers;
   public:
     NeuralNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha);
-    float train(vector<float>,vector<int>);
+    float train(vector<float> input,vector<int> target);
     vector<float> classify(vector<float> input);
+    float classify1(vector<float> input);
     vector<int> discreteClassify(vector<float> input);
     void saveWeights(string fname);
     void loadWeights(string fname);

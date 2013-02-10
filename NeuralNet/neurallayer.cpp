@@ -1,5 +1,4 @@
 #include "neurallayer.h"
-#include <iostream>
 
 using namespace std;
 using namespace NeuralNET;
@@ -38,29 +37,23 @@ void NeuralLayer::trainDelta(vector<float> input,vector<float> delta)
 
 vector<float> NeuralLayer::classify(vector<float> input)
 {
-  vector<float> outputs;
-  outputs.resize(neurons.size());  
- // cout << "Output:";
+  vector<float> outputs;  
+  outputs.resize(neurons.size());
   for(unsigned i = 0; i< neurons.size();i++)
   {
-    outputs[i] = neurons[i]->classify(input);
-   // cout << outputs[i] << " ";
-  }
-  //cout << endl;
+    outputs[i] = neurons[i]->classify(input);   
+  }  
   return outputs;
 }
 
 vector<int> NeuralLayer::discreteClassify(vector<float> input)
 {
-  vector<int> out;
-  out.resize(neurons.size());
-  //cout << "Out:";
+  vector<int> out;  
+  out.resize(neurons.size());  
   for(unsigned i = 0; i< neurons.size();i++)
   {
-    out[i] = neurons[i]->discreteClassify(input);
-    //cout << out[i] << " ";
-  }
-  //cout << endl;
+    out[i] = neurons[i]->discreteClassify(input);    
+  }  
   return out;
 }
 
@@ -116,8 +109,9 @@ float NeuralLayer::getError(vector<float> output,vector<int> target)
   return error;
 }
 
-float NeuralLayer::derivativeFunction(float x, int i = 0)
+float NeuralLayer::derivativeFunction(float x, unsigned i = 0)
 {
+  if(i>=neurons.size()) i = 0;
   return neurons[i]->derivativeFunction(x);
 }
 

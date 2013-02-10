@@ -10,18 +10,24 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = NeuralNet
 TEMPLATE = app
 
-SOURCES += main.cpp \
-    binary_perceptron.cpp \
+SOURCES += \    
     perceptron.cpp \
     continuous_perceptron.cpp \
     neurallayer.cpp \    
     neuralnetwork.cpp \
-    picture.cpp
+    picture.cpp \
+    mainwindow.cpp \
+    main.cpp \
+    train.cpp
 
 HEADERS += \
     perceptron.h \
     continuous_perceptron.h \
     neurallayer.h \
-    neuralnetwork.h
+    neuralnetwork.h \
+    mainwindow.h
 
 QMAKE_CXXFLAGS_RELEASE += -O3
+
+FORMS += \
+    mainwindow.ui
