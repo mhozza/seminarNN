@@ -25,7 +25,8 @@ HEADERS += \
     continuous_perceptron.h \
     neurallayer.h \
     neuralnetwork.h \
-    mainwindow.h
+    mainwindow.h \
+    train.h
 
 QMAKE_CXXFLAGS_RELEASE += -O3
 

@@ -2,6 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QListWidget>
+#include <QGraphicsScene>
+#include "neuralnetwork.h"
+
+using namespace NeuralNET;
+
+typedef vector<pair<vector<float>,vector<int > > > DataVector;
 
 namespace Ui {
 class MainWindow;
@@ -17,7 +24,18 @@ public:
     
 private:
     Ui::MainWindow *ui;
+    NeuralNetwork *net;
+    const int dimension, out_dimension;
+    DataVector trainData;
+    DataVector testData;
+    QGraphicsScene *errorImageScene;
+    float lastError;
+    bool stop;
 
+    void loadData(QString fname, DataVector* target, QListWidget *widget);
+    void drawTrainDataImage();
+    void drawDataImage();
+    void drawError(int step, int max_step, float error, float max_error);
 
 public slots:
     void createNN();
@@ -26,7 +44,9 @@ public slots:
     void loadTrainData();
     void loadTestData();
     void runTraining();
+    void stopTraining();
     void runTesting();
+
 
 };
 

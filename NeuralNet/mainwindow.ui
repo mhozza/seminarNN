@@ -20,13 +20,13 @@
       <x>16</x>
       <y>8</y>
       <width>185</width>
-      <height>129</height>
+      <height>153</height>
      </rect>
     </property>
     <property name="title">
      <string>NeuralNet Architecture</string>
     </property>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="createPB">
      <property name="geometry">
       <rect>
        <x>80</x>
@@ -39,17 +39,7 @@
       <string>Create</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit">
-     <property name="geometry">
-      <rect>
-       <x>8</x>
-       <y>24</y>
-       <width>57</width>
-       <height>97</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_6">
+    <widget class="QPushButton" name="pbLoadW">
      <property name="geometry">
       <rect>
        <x>80</x>
@@ -62,7 +52,7 @@
       <string>LoadW</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_7">
+    <widget class="QPushButton" name="pbSaveW">
      <property name="geometry">
       <rect>
        <x>80</x>
@@ -75,44 +65,30 @@
       <string>SaveW</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_3">
-    <property name="geometry">
-     <rect>
-      <x>224</x>
-      <y>8</y>
-      <width>265</width>
-      <height>281</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Training</string>
-    </property>
-    <widget class="QSpinBox" name="spinBox">
+    <widget class="QDoubleSpinBox" name="alphaSB">
      <property name="geometry">
       <rect>
-       <x>72</x>
-       <y>208</y>
-       <width>60</width>
-       <height>27</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QDoubleSpinBox" name="doubleSpinBox">
-     <property name="geometry">
-      <rect>
-       <x>72</x>
-       <y>168</y>
+       <x>80</x>
+       <y>120</y>
        <width>62</width>
        <height>27</height>
       </rect>
+     </property>
+     <property name="decimals">
+      <number>3</number>
+     </property>
+     <property name="singleStep">
+      <double>0.050000000000000</double>
+     </property>
+     <property name="value">
+      <double>0.250000000000000</double>
      </property>
     </widget>
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>8</x>
-       <y>176</y>
+       <x>16</x>
+       <y>128</y>
        <width>49</width>
        <height>17</height>
       </rect>
@@ -121,11 +97,50 @@
       <string>Alpha</string>
      </property>
     </widget>
+    <widget class="QPlainTextEdit" name="neteorkParamsTE">
+     <property name="geometry">
+      <rect>
+       <x>16</x>
+       <y>29</y>
+       <width>57</width>
+       <height>89</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_3">
+    <property name="geometry">
+     <rect>
+      <x>216</x>
+      <y>16</y>
+      <width>265</width>
+      <height>281</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Training</string>
+    </property>
+    <widget class="QSpinBox" name="roundsSB">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>176</y>
+       <width>121</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>10000</number>
+     </property>
+     <property name="singleStep">
+      <number>10</number>
+     </property>
+    </widget>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
        <x>8</x>
-       <y>216</y>
+       <y>152</y>
        <width>57</width>
        <height>17</height>
       </rect>
@@ -134,12 +149,12 @@
       <string>Rounds</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="runPB">
      <property name="geometry">
       <rect>
-       <x>16</x>
-       <y>248</y>
-       <width>98</width>
+       <x>8</x>
+       <y>232</y>
+       <width>121</width>
        <height>27</height>
       </rect>
      </property>
@@ -147,7 +162,7 @@
       <string>Run</string>
      </property>
     </widget>
-    <widget class="QGraphicsView" name="graphicsView_2">
+    <widget class="QGraphicsView" name="trainDataGW">
      <property name="geometry">
       <rect>
        <x>16</x>
@@ -155,6 +170,20 @@
        <width>100</width>
        <height>100</height>
       </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="sceneRect">
+      <rectf>
+       <x>0.000000000000000</x>
+       <y>0.000000000000000</y>
+       <width>100.000000000000000</width>
+       <height>100.000000000000000</height>
+      </rectf>
      </property>
     </widget>
     <widget class="QLabel" name="label_3">
@@ -170,7 +199,7 @@
       <string>TrainData</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="loadTrainDataPB">
      <property name="geometry">
       <rect>
        <x>144</x>
@@ -183,27 +212,40 @@
       <string>Load</string>
      </property>
     </widget>
-    <widget class="QListView" name="listView">
-     <property name="geometry">
-      <rect>
-       <x>144</x>
-       <y>48</y>
-       <width>97</width>
-       <height>185</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QProgressBar" name="progressBar">
      <property name="geometry">
       <rect>
-       <x>128</x>
-       <y>248</y>
-       <width>118</width>
+       <x>8</x>
+       <y>208</y>
+       <width>121</width>
        <height>23</height>
       </rect>
      </property>
      <property name="value">
-      <number>24</number>
+      <number>100</number>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="trainDataLW">
+     <property name="geometry">
+      <rect>
+       <x>144</x>
+       <y>48</y>
+       <width>105</width>
+       <height>177</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="stopPB">
+     <property name="geometry">
+      <rect>
+       <x>144</x>
+       <y>232</y>
+       <width>98</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Stop</string>
      </property>
     </widget>
    </widget>
@@ -213,23 +255,13 @@
       <x>496</x>
       <y>8</y>
       <width>129</width>
-      <height>289</height>
+      <height>281</height>
      </rect>
     </property>
     <property name="title">
      <string>Testing</string>
     </property>
-    <widget class="QListView" name="listView_2">
-     <property name="geometry">
-      <rect>
-       <x>16</x>
-       <y>64</y>
-       <width>97</width>
-       <height>129</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_4">
+    <widget class="QPushButton" name="loadTestDataPB">
      <property name="geometry">
       <rect>
        <x>16</x>
@@ -246,7 +278,7 @@
      <property name="geometry">
       <rect>
        <x>16</x>
-       <y>208</y>
+       <y>240</y>
        <width>98</width>
        <height>27</height>
       </rect>
@@ -255,17 +287,14 @@
       <string>Test</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_4">
+    <widget class="QListWidget" name="testDataLW">
      <property name="geometry">
       <rect>
        <x>16</x>
-       <y>248</y>
-       <width>66</width>
-       <height>17</height>
+       <y>56</y>
+       <width>97</width>
+       <height>177</height>
       </rect>
-     </property>
-     <property name="text">
-      <string>Results:</string>
      </property>
     </widget>
    </widget>
@@ -281,7 +310,7 @@
     <property name="title">
      <string>DataView</string>
     </property>
-    <widget class="QGraphicsView" name="graphicsView">
+    <widget class="QGraphicsView" name="dataGW">
      <property name="geometry">
       <rect>
        <x>8</x>
@@ -290,16 +319,30 @@
        <height>100</height>
       </rect>
      </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="sceneRect">
+      <rectf>
+       <x>0.000000000000000</x>
+       <y>0.000000000000000</y>
+       <width>100.000000000000000</width>
+       <height>100.000000000000000</height>
+      </rectf>
+     </property>
     </widget>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView_3">
+   <widget class="QGraphicsView" name="errorGW">
     <property name="geometry">
      <rect>
       <x>32</x>
-      <y>312</y>
+      <y>296</y>
       <width>585</width>
-      <height>161</height>
+      <height>177</height>
      </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
     </property>
    </widget>
   </widget>
