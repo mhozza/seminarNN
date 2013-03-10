@@ -11,6 +11,8 @@ NeuralLayer::NeuralLayer(unsigned size, unsigned dimension, float alpha = 0.25)
     //neurons[i] = new BinaryPerceptron(dimension,alpha);
     neurons[i] = new ContinuousPerceptron(dimension,alpha);
     neurons[i]->randomizeWeights();
+    neurons[i]->momentum = 0.1;
+//    neurons[i]->w0 = 0.01;
   }
 }
 

@@ -19,16 +19,17 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QApplication* app, QWidget *parent = 0);
     ~MainWindow();
     
 private:
+    QApplication * app;
     Ui::MainWindow *ui;
     NeuralNetwork *net;
     const int dimension, out_dimension;
     DataVector trainData;
     DataVector testData;
-    QGraphicsScene *errorImageScene;
+    QGraphicsScene *errorImageScene;    
     float lastError;
     bool stop;
 

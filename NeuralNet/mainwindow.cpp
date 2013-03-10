@@ -3,17 +3,21 @@
 #include <fstream>
 #include <sstream>
 #include <QDebug>
+#include <iostream>
 
 using namespace std;
 
-MainWindow::MainWindow(QWidget *parent) :
+#define FRAMES 1
+
+MainWindow::MainWindow(QApplication *app, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     net(NULL),
     dimension(2),
     out_dimension(3),
     stop(true),
-    lastError(-1)
+    lastError(-1),
+    app(app)
 
 {
     ui->setupUi(this);
@@ -27,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->loadTestDataPB,SIGNAL(clicked()),this,SLOT(loadTestData()));
     connect(ui->runPB,SIGNAL(clicked()),this,SLOT(runTraining()));
     connect(ui->stopPB,SIGNAL(clicked()),this,SLOT(stopTraining()));
+    connect(ui->runTestingPB,SIGNAL(clicked()),this,SLOT(runTesting()));
 }
 
 MainWindow::~MainWindow()
@@ -39,11 +44,12 @@ void MainWindow::createNN()
     float alpha = (float)ui->alphaSB->value();
     QString params = ui->neteorkParamsTE->toPlainText();
     QStringList paramsArray = params.split("\n");
+    while(!paramsArray.empty() and paramsArray.back()=="") paramsArray.pop_back();
     unsigned sizes[paramsArray.size()+1];
     for(int i = 0;i<paramsArray.size();i++)
-    {
+    {        
         sizes[i] = paramsArray[i].toUInt();
-    }
+    }    
     sizes[paramsArray.size()] = out_dimension;
     if (net != NULL) delete net;
     net = new NeuralNetwork(paramsArray.size()+1,sizes,dimension,alpha);
@@ -104,11 +110,11 @@ void MainWindow::runTraining()
 
     float E = 0;
 
-    random_shuffle(trainData.begin(),trainData.end());
     stop = false;
     for(int i = 0;i< rounds;i++)
     {
         if(stop) break;
+        random_shuffle(trainData.begin(),trainData.end());
         E = 0;
         for(int j = 0; j<trainData.size();j++)
         {
@@ -117,17 +123,49 @@ void MainWindow::runTraining()
             E += e;
         }
         ui->progressBar->setValue(round(100*(i+1)/rounds));
-        if(!(i%10))
+        if(!(i%FRAMES))
             drawDataImage();
-        drawError(i,rounds,E,400);
+        drawError(i,rounds+2,E,400);
+        app->processEvents();
     }
     lastError = -1;
     drawDataImage();
     ui->progressBar->setValue(100);
+    ui->trainResLbl->setText("Result: " + QString::number(E) );
+    cout << E << endl;
+}
+
+int findMax(vector<float> &v)
+{
+    float m = v[0];
+    int maxi = 0;
+    for(int i = 1;i<v.size();i++)
+    {
+        if(v[i]>m)
+        {
+            m = v[i];
+            maxi = i;
+        }
+    }
+    return maxi;
 }
 
 void MainWindow::runTesting()
 {
+    float succ = 0, E = 0;
+
+    for(int j = 0; j<testData.size();j++)
+    {
+        vector<float> c = net->classify(trainData[j].first);
+        float e = 0;
+        for(int i = 0;i<c.size();i++)
+        {
+            e+=(c[i]-testData[j].second[i])*(c[i]-testData[j].second[i])/2.0;
+        }
+        if(testData[j].second[findMax(c)] == 1) succ++;
+        E += e;
+    }
+    ui->testResLbl->setText("Result: " + QString::number(E) + "\nSuccess: " + QString::number(100*succ/testData.size()) + "%"  );
 
 }
 
@@ -192,23 +230,19 @@ void MainWindow::drawDataImage()
 
 void MainWindow::drawError(int step, int max_step, float error, float max_error)
 {
-
     if(lastError == -1) lastError = max_error;
-    for(unsigned i = 0; i<trainData.size();i++)
-    {
-        float x = ((float)(step*ui->errorGW->width())/max_step);
-        float lastX = ((float)((step-1)*ui->errorGW->width())/max_step);
-        float y = ui->errorGW->height() - ((error*ui->errorGW->height())/max_error);
-        float lastY = ui->errorGW->height() - ((lastError*ui->errorGW->height())/max_error);
+    float x = ((float)(step*ui->errorGW->width())/max_step);
+    float lastX = ((float)((step-1)*ui->errorGW->width())/max_step);
+    float y = ui->errorGW->height() - ((error*ui->errorGW->height())/max_error);
+    float lastY = ui->errorGW->height() - ((lastError*ui->errorGW->height())/max_error);
 
-        /*qDebug() << "Error:" << error;
-        qDebug() << "GW height:" << ui->errorGW->height();
-        qDebug() << "y:" << y;*/
+    /*qDebug() << "Error:" << error;
+    qDebug() << "GW height:" << ui->errorGW->height();
+    qDebug() << "y:" << y;*/
 
-        errorImageScene->addLine(lastX,lastY,x,y,QPen(Qt::blue));
-        lastError = error;
-    }
-    errorImageScene->invalidate();
+    errorImageScene->addLine(lastX,lastY,x,y,QPen(Qt::blue));
+
+    lastError = error;
 }
 
 
